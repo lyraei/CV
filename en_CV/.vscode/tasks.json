@@ -1,0 +1,72 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build LaTeX with latexmk and lualatex",
+            "type": "shell",
+            "command": "latexmk",
+            "args": [
+                "-pdf",
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "-lualatex",
+                "-outdir=build",
+                "${fileBasenameNoExtension}.tex"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}" // Run in the project root directory
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": ["$latexmk"],
+            "detail": "Compile LaTeX document using latexmk with lualatex engine.",
+            "presentation": {
+                "reveal": "always", // Always show the terminal output
+                "panel": "shared" // Share the terminal panel for multiple tasks
+            },
+            "icon": {
+                "id": "pencil",
+                "color": "terminal.ansiGreen" // Orange color for LaTeX tasks
+            }
+        },
+        {
+            "label": "Clean LaTeX Auxiliary and PDF Files",
+            "type": "shell",
+            "command": "latexmk",
+            "args": [
+                "-C", // Clean auxiliary files and remove the PDF
+                "-outdir=${workspaceFolder}/build",
+                "${fileBasenameNoExtension}"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "group": "build",
+            "problemMatcher": ["$latexmk"],
+            "detail": "Remove LaTeX auxiliary and PDF files using latexmk -C.",
+            "icon": {
+                "id": "flame",
+                "color": "terminal.ansiRed" // Orange color for LaTeX tasks
+            }
+        },
+        {
+            "label": "Generate BibTeX Bibliography",
+            "type": "shell",
+            "command": "bibtex",
+            "args": ["${workspaceFolder}/build/${fileBasenameNoExtension}"],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "group": "build",
+            "problemMatcher": ["$bibtex"],
+            "detail": "Generate bibliography using BibTeX.",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            }
+        }
+    ]
+}
